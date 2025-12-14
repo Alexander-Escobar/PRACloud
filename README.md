@@ -86,7 +86,10 @@ En desarrollo – versión académica.
 
 ## Autor
 Proyecto desarrollado por:
+- Alisson Serpas
 - Alexander Escobar
+- David Perez
+- Jonathan Beltran
 
 Repositorio público con fines académicos y de aprendizaje.
 
