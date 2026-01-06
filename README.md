@@ -91,12 +91,10 @@ refactor: Reestructuración de código (ej: refactor: optimizar script)
 
 test: Pruebas (ej: test: agregar pruebas unitarias)
 
-Proceso de desarrollo
-Crear rama desde develop:
-
-Bash
-
-git checkout -b feat/nueva-funcionalidad
+### Proceso de desarrollo
+1. Crear rama desde `develop`: 
+   ```bash
+   git checkout -b feat/nueva-funcionalidad
 Hacer commits descriptivos siguiendo la convención.
 
 Obligatorio: Crear Pull Request (PR) hacia develop.
@@ -107,13 +105,14 @@ Merge después de aprobación.
 
 No se aceptan commits directos a main o develop.
 
-Uso de datos
+ Uso de datos
 Este proyecto utiliza únicamente datos ficticios o simulados. No se almacenan ni procesan datos personales reales.
 
----
-## Autores
+ Autores
+Alisson Serpas
 
-* **Alisson Serpas**
-* **Alexander Escobar**
-* **David Perez**
-* **Jonathan Beltran**
+Alexander Escobar
+
+David Perez
+
+Jonathan Beltran
