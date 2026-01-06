@@ -110,11 +110,10 @@ No se aceptan commits directos a main o develop.
 Uso de datos
 Este proyecto utiliza únicamente datos ficticios o simulados. No se almacenan ni procesan datos personales reales.
 
-Autores
-Alisson Serpas
+---
+## Autores
 
-Alexander Escobar
-
-David Perez
-
-Jonathan Beltran
+* **Alisson Serpas**
+* **Alexander Escobar**
+* **David Perez**
+* **Jonathan Beltran**
