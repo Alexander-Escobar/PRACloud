@@ -109,6 +109,7 @@ No se aceptan commits directos a main o develop.
 
 Uso de datos
 Este proyecto utiliza únicamente datos ficticios o simulados. No se almacenan ni procesan datos personales reales.
+```
 
 ---
 ## Autores
