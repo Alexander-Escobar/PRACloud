@@ -33,6 +33,25 @@ Analizar, diseñar, implementar y documentar una plataforma web/cloud para el re
 * **Dashboards:** Google Sheets / Looker Studio
 
 ---
+## 📊 Diagramas de Arquitectura y Flujo
+
+### 1. Diagrama Conceptual (Flujo del Proceso)
+Describe el paso a paso de cómo el usuario interactúa con el sistema, desde el registro hasta la confirmación:
+
+![Diagrama Conceptual](diagramas/diagrama_conceptual.png)
+
+### 2. Diagrama Técnico (Arquitectura Cloud)
+Muestra cómo se conectan las herramientas de Google Workspace (Forms, Sheets, Apps Script) para lograr la solución:
+
+![Diagrama Técnico](diagramas/Diagrama%20Tecnico.png)
+
+> *Los archivos originales editables se encuentran en la carpeta `diagramas/`.*
+---
+
+## 📚 Documentación
+El documento detallado de **Análisis y Diseño** (Fase 1) y el **Plan de Recursos** están disponibles para consulta en la carpeta `docs/`.
+
+---
 
 ## Estructura del repositorio
 
