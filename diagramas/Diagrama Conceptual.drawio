@@ -1,0 +1,111 @@
+<mxfile host="app.diagrams.net" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/143.0.0.0 Safari/537.36" version="29.2.10">
+  <diagram name="Página-1" id="W_n2cYShAvE2t7xX2oA7">
+    <mxGraphModel dx="1018" dy="611" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="86c4Q49SytX1yIrefLaH-1" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="Usuario /&lt;div&gt;Participante&lt;/div&gt;" vertex="1">
+          <mxGeometry height="60" width="120" x="310" y="40" as="geometry" />
+        </mxCell>
+        <mxCell id="86c4Q49SytX1yIrefLaH-2" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="Administrador / Coordinador" vertex="1">
+          <mxGeometry height="60" width="120" x="180" y="810" as="geometry" />
+        </mxCell>
+        <mxCell id="86c4Q49SytX1yIrefLaH-3" parent="1" style="rounded=0;whiteSpace=wrap;html=1;fillColor=#d5e8d4;strokeColor=#82b366;" value="Cliente Institucional" vertex="1">
+          <mxGeometry height="60" width="120" x="450" y="810" as="geometry" />
+        </mxCell>
+        <mxCell id="86c4Q49SytX1yIrefLaH-4" parent="1" style="whiteSpace=wrap;html=1;aspect=fixed;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;" value="Formulario de Registro" vertex="1">
+          <mxGeometry height="80" width="80" x="330" y="170" as="geometry" />
+        </mxCell>
+        <mxCell id="86c4Q49SytX1yIrefLaH-5" parent="1" style="whiteSpace=wrap;html=1;aspect=fixed;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;" value="Plataforma de Asistencia" vertex="1">
+          <mxGeometry height="80" width="80" x="330" y="320" as="geometry" />
+        </mxCell>
+        <mxCell id="86c4Q49SytX1yIrefLaH-6" parent="1" style="whiteSpace=wrap;html=1;aspect=fixed;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;" value="Base de Datos Central" vertex="1">
+          <mxGeometry height="80" width="80" x="330" y="500" as="geometry" />
+        </mxCell>
+        <mxCell id="86c4Q49SytX1yIrefLaH-7" parent="1" style="whiteSpace=wrap;html=1;aspect=fixed;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;" value="&amp;nbsp;Automatización&lt;div&gt;(Notificaciones)&lt;/div&gt;" vertex="1">
+          <mxGeometry height="80" width="80" x="100" y="500" as="geometry" />
+        </mxCell>
+        <mxCell id="86c4Q49SytX1yIrefLaH-8" parent="1" style="whiteSpace=wrap;html=1;aspect=fixed;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;" value="Reportes / Dashboard" vertex="1">
+          <mxGeometry height="80" width="80" x="330" y="660" as="geometry" />
+        </mxCell>
+        <mxCell id="86c4Q49SytX1yIrefLaH-9" edge="1" parent="1" source="86c4Q49SytX1yIrefLaH-1" style="endArrow=classic;html=1;rounded=0;" target="86c4Q49SytX1yIrefLaH-4" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="280" y="180" as="sourcePoint" />
+            <mxPoint x="330" y="130" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="86c4Q49SytX1yIrefLaH-18" connectable="0" parent="86c4Q49SytX1yIrefLaH-9" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="Llena Formulario" vertex="1">
+          <mxGeometry relative="1" x="-0.2667" y="-4" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="86c4Q49SytX1yIrefLaH-10" edge="1" parent="1" source="86c4Q49SytX1yIrefLaH-5" style="endArrow=classic;html=1;rounded=0;" target="86c4Q49SytX1yIrefLaH-7" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="230" y="280" as="sourcePoint" />
+            <mxPoint x="280" y="230" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="86c4Q49SytX1yIrefLaH-16" connectable="0" parent="86c4Q49SytX1yIrefLaH-10" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="Envia Confirmacion" vertex="1">
+          <mxGeometry relative="1" x="-0.0663" y="1" as="geometry">
+            <mxPoint y="-1" as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="86c4Q49SytX1yIrefLaH-11" edge="1" parent="1" source="86c4Q49SytX1yIrefLaH-2" style="endArrow=classic;html=1;rounded=0;" target="86c4Q49SytX1yIrefLaH-8" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="440" y="150" as="sourcePoint" />
+            <mxPoint x="490" y="100" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="86c4Q49SytX1yIrefLaH-20" connectable="0" parent="86c4Q49SytX1yIrefLaH-11" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="Revisa DashBoard" vertex="1">
+          <mxGeometry relative="1" x="-0.0489" y="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="86c4Q49SytX1yIrefLaH-12" edge="1" parent="1" source="86c4Q49SytX1yIrefLaH-3" style="endArrow=classic;html=1;rounded=0;" target="86c4Q49SytX1yIrefLaH-8" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="650" y="200" as="sourcePoint" />
+            <mxPoint x="700" y="150" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="86c4Q49SytX1yIrefLaH-19" connectable="0" parent="86c4Q49SytX1yIrefLaH-12" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="Revisa Informes" vertex="1">
+          <mxGeometry relative="1" x="-0.0286" y="3" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="86c4Q49SytX1yIrefLaH-13" edge="1" parent="1" source="86c4Q49SytX1yIrefLaH-4" style="endArrow=classic;html=1;rounded=0;" target="86c4Q49SytX1yIrefLaH-5" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="100" y="390" as="sourcePoint" />
+            <mxPoint x="150" y="340" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="86c4Q49SytX1yIrefLaH-17" connectable="0" parent="86c4Q49SytX1yIrefLaH-13" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="Registra Asistencia" vertex="1">
+          <mxGeometry relative="1" x="-0.05" y="2" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="86c4Q49SytX1yIrefLaH-14" edge="1" parent="1" source="86c4Q49SytX1yIrefLaH-5" style="endArrow=classic;html=1;rounded=0;" target="86c4Q49SytX1yIrefLaH-6" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="290" y="340" as="sourcePoint" />
+            <mxPoint x="340" y="290" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="86c4Q49SytX1yIrefLaH-21" connectable="0" parent="86c4Q49SytX1yIrefLaH-14" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="Adiciona Registro" vertex="1">
+          <mxGeometry relative="1" x="0.02" y="-2" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="86c4Q49SytX1yIrefLaH-15" edge="1" parent="1" source="86c4Q49SytX1yIrefLaH-6" style="endArrow=classic;html=1;rounded=0;" target="86c4Q49SytX1yIrefLaH-8" value="">
+          <mxGeometry height="50" relative="1" width="50" as="geometry">
+            <mxPoint x="360" y="370" as="sourcePoint" />
+            <mxPoint x="410" y="320" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="86c4Q49SytX1yIrefLaH-22" connectable="0" parent="86c4Q49SytX1yIrefLaH-15" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" value="Sumariza y Consolida Información" vertex="1">
+          <mxGeometry relative="1" x="0.1" y="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
