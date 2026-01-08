@@ -137,3 +137,4 @@ Este proyecto utiliza únicamente datos ficticios o simulados. No se almacenan n
 * **Alexander Escobar**
 * **David Perez**
 * **Jonathan Beltran**
+* **Jorge Francisco**
