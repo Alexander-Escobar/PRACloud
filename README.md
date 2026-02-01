@@ -58,7 +58,7 @@ El documento detallado de **Análisis y Diseño** (Fase 1) y el **Plan de Recurs
 ```text
 /
 ├── /docs       # Documentación del proyecto (análisis, diseño, informe final)
-├── /scripts    # Scripts de automatización (.gs para Apps Script)
+├── /src        # Scripts de automatización (.gs para Apps Script)
 ├── /tests      # Evidencias y matrices de pruebas
 ├── /diagramas  # Diagramas de arquitectura y flujo (.drawio / .png)
 └── README.md   # Información general del proyecto
