@@ -1,0 +1,1075 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel de Administración - DGAD</title>
+
+    <!-- Firebase SDK -->
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-app-compat.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/9.22.0/firebase-auth-compat.js"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .header {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            margin-bottom: 30px;
+            text-align: center;
+        }
+
+        .header h1 {
+            color: #333;
+            font-size: 32px;
+            margin-bottom: 10px;
+        }
+
+        .header p {
+            color: #666;
+            font-size: 16px;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 25px;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .stat-card .icon {
+            font-size: 40px;
+            margin-bottom: 15px;
+        }
+
+        .stat-card h3 {
+            color: #666;
+            font-size: 14px;
+            font-weight: normal;
+            margin-bottom: 10px;
+        }
+
+        .stat-card .number {
+            font-size: 36px;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .main-content {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        }
+
+        .tabs {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+            border-bottom: 2px solid #eee;
+        }
+
+        .tab {
+            padding: 15px 30px;
+            background: none;
+            border: none;
+            font-size: 16px;
+            font-weight: 600;
+            color: #666;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border-bottom: 3px solid transparent;
+        }
+
+        .tab:hover {
+            color: #667eea;
+        }
+
+        .tab.active {
+            color: #667eea;
+            border-bottom-color: #667eea;
+        }
+
+        .tab-content {
+            display: none;
+        }
+
+        .tab-content.active {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+                transform: translateY(10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 600;
+            color: #333;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 12px;
+            border: 2px solid #eee;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus {
+            outline: none;
+            border-color: #667eea;
+        }
+
+        .btn {
+            padding: 12px 30px;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .btn-secondary {
+            background: #f0f0f0;
+            color: #333;
+            font-size: 14px;
+            padding: 8px 16px;
+        }
+
+        .btn-secondary:hover {
+            background: #e0e0e0;
+        }
+
+        .qr-result {
+            margin-top: 30px;
+            padding: 30px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            text-align: center;
+            display: none;
+        }
+
+        .qr-result.show {
+            display: block;
+            animation: fadeIn 0.5s ease;
+        }
+
+        .qr-result img {
+            max-width: 300px;
+            margin: 20px auto;
+            border: 5px solid white;
+            border-radius: 12px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        .qr-result .url-box {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 20px 0;
+            word-break: break-all;
+            font-family: monospace;
+            font-size: 12px;
+            color: #666;
+        }
+
+        .events-list {
+            display: grid;
+            gap: 15px;
+        }
+
+        .event-card {
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            transition: all 0.3s ease;
+        }
+
+        .event-card:hover {
+            background: #e9ecef;
+        }
+
+        .event-info h4 {
+            color: #333;
+            margin-bottom: 5px;
+        }
+
+        .event-info p {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .event-qr-section {
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 2px dashed #ddd;
+        }
+
+        .qr-preview {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .qr-preview img {
+            width: 150px;
+            height: 150px;
+            border: 3px solid white;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        .qr-actions {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .loading {
+            display: none;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .loading.show {
+            display: block;
+        }
+
+        .spinner {
+            border: 4px solid #f3f3f3;
+            border-top: 4px solid #667eea;
+            border-radius: 50%;
+            width: 40px;
+            height: 40px;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 10px;
+        }
+
+        @keyframes spin {
+            0% {
+                transform: rotate(0deg);
+            }
+
+            100% {
+                transform: rotate(360deg);
+            }
+        }
+
+        .alert {
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            display: none;
+        }
+
+        .alert.show {
+            display: block;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .alert-success {
+            background: #d4edda;
+            color: #155724;
+            border: 1px solid #c3e6cb;
+        }
+
+        .alert-error {
+            background: #f8d7da;
+            color: #721c24;
+            border: 1px solid #f5c6cb;
+        }
+
+        .quick-actions {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .quick-action-btn {
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+        }
+
+        .quick-action-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 20px rgba(102, 126, 234, 0.4);
+        }
+
+        .quick-action-btn .icon {
+            font-size: 24px;
+            display: block;
+            margin-bottom: 10px;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 4px 10px;
+            border-radius: 12px;
+            font-size: 11px;
+            font-weight: 600;
+            margin-left: 8px;
+        }
+
+        .badge-success {
+            background: #4CAF50;
+            color: white;
+        }
+
+        .badge-warning {
+            background: #FF9800;
+            color: white;
+        }
+
+        /* BOTÓN DE LOGOUT - SOLO BOTÓN ROJO */
+        .btn-logout-container {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+
+        .btn-logout {
+            padding: 12px 24px;
+            background: #f44336;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(244, 67, 54, 0.3);
+        }
+
+        .btn-logout:hover {
+            background: #d32f2f;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 16px rgba(244, 67, 54, 0.4);
+        }
+    </style>
+</head>
+
+<body tyle="display:none;" id="adminBody">
+    <!-- Botón de logout -->
+    <div id="logoutContainer" class="btn-logout-container" style="display: none;">
+        <button class="btn-logout" onclick="cerrarSesion()">
+            Logout
+        </button>
+    </div>
+
+    <div class="container">
+        <div class="header">
+            <h1>🎓 Panel de Administración DGAD</h1>
+            <p>Sistema de Registro y Asistencia Cloud</p>
+        </div>
+
+        <div class="stats-grid">
+            <div class="stat-card">
+                <div class="icon">📊</div>
+                <h3>Total de Registros</h3>
+                <div class="number" id="totalRegistros">-</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="icon">✅</div>
+                <h3>Presentes Hoy</h3>
+                <div class="number" id="presentesHoy">-</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="icon">📅</div>
+                <h3>Registros Hoy</h3>
+                <div class="number" id="registrosHoy">-</div>
+            </div>
+
+            <div class="stat-card">
+                <div class="icon">🎯</div>
+                <h3>Total de Eventos</h3>
+                <div class="number" id="totalEventos">-</div>
+            </div>
+        </div>
+
+        <div class="main-content">
+            <div class="quick-actions">
+                <button class="quick-action-btn" onclick="abrirGoogleForm()">
+                    <span class="icon">📝</span>
+                    Abrir Google Form
+                </button>
+                <button class="quick-action-btn" onclick="mostrarQRGoogleForm()">
+                    <span class="icon">📱</span>
+                    QR del Form
+                </button>
+                <button class="quick-action-btn" onclick="generarReporteSemanal()">
+                    <span class="icon">📧</span>
+                    Reporte Semanal
+                </button>
+                <button class="quick-action-btn" onclick="generarReporteMensual()">
+                    <span class="icon">📈</span>
+                    Reporte Mensual
+                </button>
+                <button class="quick-action-btn" onclick="abrirLookerStudio()">
+                    <span class="icon">📊</span>
+                    Ver Dashboard
+                </button>
+                <button class="quick-action-btn" onclick="abrirSpreadsheet()">
+                    <span class="icon">📋</span>
+                    Abrir Sheets
+                </button>
+                <button class="quick-action-btn" onclick="resetearHoja()"
+                    style="background: linear-gradient(135deg, #f44336 0%, #d32f2f 100%);">
+                    <span class="icon">🔄</span>
+                    Resetear Datos
+                </button>
+            </div>
+
+            <div id="alertSuccess" class="alert alert-success"></div>
+            <div id="alertError" class="alert alert-error"></div>
+
+            <div class="tabs">
+                <button class="tab active" onclick="switchTab('generar')">
+                    🔗 Generar QR
+                </button>
+                <button class="tab" onclick="switchTab('eventos')">
+                    📅 Mis Eventos y QRs
+                </button>
+                <button class="tab" onclick="switchTab('configuracion')">
+                    ⚙️ Configuración
+                </button>
+            </div>
+
+            <div id="tab-generar" class="tab-content active">
+                <h2 style="margin-bottom: 20px;">Generar Código QR para Evento</h2>
+
+                <form id="formQR" onsubmit="return generarQR(event);">
+                    <div class="form-group">
+                        <label for="nombreEvento">Nombre del Evento *</label>
+                        <input type="text" id="nombreEvento" placeholder="Ej: Taller de Apps Script Avanzado" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="idEvento">ID del Evento *</label>
+                        <input type="text" id="idEvento" placeholder="Ej: TALLER-2026-001" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="fechaEvento">Fecha del Evento *</label>
+                        <input type="date" id="fechaEvento" required>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary">
+                        <span>🎯</span>
+                        Crear Evento y Generar QR
+                    </button>
+                </form>
+
+                <div id="loading" class="loading">
+                    <div class="spinner"></div>
+                    <p>Creando evento y generando código QR...</p>
+                </div>
+
+                <div id="qrResult" class="qr-result">
+                    <h3 style="color: #667eea; margin-bottom: 20px;">✓ Evento Creado y QR Generado</h3>
+
+                    <div id="qrEventoNombre" style="font-size: 20px; font-weight: bold; margin-bottom: 10px;"></div>
+                    <div id="qrEventoId" style="color: #666; margin-bottom: 20px;"></div>
+
+                    <img id="qrImage" src="" alt="Código QR">
+
+                    <div class="url-box">
+                        <strong>URL del evento:</strong><br>
+                        <span id="qrUrl"></span>
+                    </div>
+
+                    <div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap; margin-top: 20px;">
+                        <button class="btn btn-primary" onclick="descargarQR()">
+                            📥 Descargar QR
+                        </button>
+                        <button class="btn btn-secondary" onclick="copiarURL()">
+                            📋 Copiar URL
+                        </button>
+                        <button class="btn btn-secondary" onclick="compartirWhatsApp()">
+                            💬 WhatsApp
+                        </button>
+                        <button class="btn btn-secondary" onclick="compartirEmail()">
+                            📧 Email
+                        </button>
+                        <button class="btn btn-secondary" onclick="compartirTelegram()">
+                            ✈️ Telegram
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <div id="tab-eventos" class="tab-content">
+                <h2 style="margin-bottom: 20px;">📅 Mis Eventos y Códigos QR</h2>
+
+                <div id="eventosList" class="events-list">
+                    <p style="text-align: center; color: #999;">Cargando eventos...</p>
+                </div>
+            </div>
+
+            <div id="tab-configuracion" class="tab-content">
+                <h2 style="margin-bottom: 20px;">Configuración del Sistema</h2>
+
+                <div class="form-group">
+                    <label>Estado del Sistema</label>
+                    <div style="background: #d4edda; color: #155724; padding: 15px; border-radius: 8px;">
+                        ✓ Sistema operando correctamente
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label>Triggers Automáticos</label>
+                    <div style="background: #f8f9fa; padding: 15px; border-radius: 8px;">
+                        <p style="margin-bottom: 10px;">✓ Confirmaciones por email: <strong>Activo</strong></p>
+                        <p style="margin-bottom: 10px;">✓ Reporte semanal: <strong>Lunes 8:00 AM</strong></p>
+                        <p>✓ Reporte mensual: <strong>Día 1 de cada mes 9:00 AM</strong></p>
+                    </div>
+                </div>
+
+                <button class="btn btn-primary" onclick="reinicializarSistema()">
+                    🔄 Reinicializar Sistema
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ============================================
+        // CONFIGURACIÓN DE FIREBASE
+        // ============================================
+        const firebaseConfig = {
+            apiKey: "AIzaSyCNuvcq8Uv081wWZsBQunsr0rVhpocKTuc",
+            authDomain: "dgad-asistencia.firebaseapp.com",
+            projectId: "dgad-asistencia",
+            storageBucket: "dgad-asistencia.firebasestorage.app",
+            messagingSenderId: "97117890335",
+            appId: "1:97117890335:web:983f787667b04ffed6722a"
+        };
+
+        // Inicializar Firebase
+        firebase.initializeApp(firebaseConfig);
+        const auth = firebase.auth();
+
+        // IMPORTANTE: Actualiza esta URL después del primer deployment
+        const DEPLOYMENT_URL = 'https://script.google.com/macros/s/AKfycbwnN1Hl4sK8_UbwJ5pske3cfTp9Lf8TC2HGx1bWdtcwJq-2pbphgIlI6kOTKD6kpCd4/exec';
+
+        // ============================================
+        // VERIFICAR AUTENTICACIÓN
+        // ============================================
+		auth.onAuthStateChanged(function (user) {
+
+			if (!user) {
+				console.log("❌ Usuario no autenticado");
+				window.location.replace(DEPLOYMENT_URL);
+				return;
+			}
+
+			if (!user.emailVerified) {
+				console.log("⚠ Email no verificado");
+				auth.signOut();
+				window.location.replace(DEPLOYMENT_URL);
+				return;
+			}
+
+			console.log("✅ Acceso autorizado:", user.email);
+
+			// Mostrar panel solo si está autenticado
+			document.getElementById('adminBody').style.display = 'block';
+
+			// Mostrar botón logout
+			document.getElementById('logoutContainer').style.display = 'block';
+
+			// Inicializar datos SOLO cuando ya está validado
+			inicializarPanel();
+		});
+
+        // ============================================
+        // FUNCIÓN CERRAR SESIÓN
+        // ============================================
+		function cerrarSesion() 
+		{
+			if (!confirm('¿Seguro que deseas cerrar sesión?')) return;
+
+			auth.signOut()
+				.then(function () {
+					console.log('✅ Sesión cerrada correctamente');
+					window.location.replace(DEPLOYMENT_URL);
+				})
+				.catch(function (error) {
+					console.error('❌ Error al cerrar sesión:', error);
+					alert('Error al cerrar sesión: ' + error.message);
+				});
+		}
+
+        // ============================================
+        // CÓDIGO ORIGINAL DEL PANEL
+        // ============================================
+        var qrData = null;
+
+		function inicializarPanel() {
+			console.log("🚀 Panel inicializado tras autenticación");
+			cargarEstadisticas();
+			cargarEventos();
+		}
+
+        function switchTab(tabName) {
+            var tabs = document.querySelectorAll('.tab-content');
+            for (var i = 0; i < tabs.length; i++) {
+                tabs[i].classList.remove('active');
+            }
+
+            var buttons = document.querySelectorAll('.tab');
+            for (var i = 0; i < buttons.length; i++) {
+                buttons[i].classList.remove('active');
+            }
+
+            document.getElementById('tab-' + tabName).classList.add('active');
+            event.target.classList.add('active');
+
+            if (tabName === 'eventos') {
+                cargarEventos();
+            }
+        }
+
+        function cargarEstadisticas() {
+            google.script.run
+                .withSuccessHandler(function (stats) {
+                    document.getElementById('totalRegistros').textContent = stats.totalRegistros;
+                    document.getElementById('presentesHoy').textContent = stats.presentesHoy;
+                    document.getElementById('registrosHoy').textContent = stats.registrosHoy;
+                    document.getElementById('totalEventos').textContent = stats.totalEventos;
+                })
+                .withFailureHandler(function (error) {
+                    console.error('Error:', error);
+                })
+                .obtenerEstadisticas();
+        }
+
+        function cargarEventos() {
+            var lista = document.getElementById('eventosList');
+            lista.innerHTML = '<p style="text-align: center; color: #999;">Cargando eventos...</p>';
+
+            google.script.run
+                .withSuccessHandler(function (eventos) {
+                    if (!eventos || eventos.length === 0) {
+                        lista.innerHTML = '<p style="text-align: center; color: #999;">No hay eventos registrados.</p>';
+                        return;
+                    }
+
+                    var html = '';
+                    for (var i = 0; i < eventos.length; i++) {
+                        var ev = eventos[i];
+                        var tieneQR = ev.urlQR && ev.urlQR !== '';
+
+                        html += '<div class="event-card">';
+                        html += '  <div class="event-info">';
+                        html += '    <h4>' + (ev.nombre || 'Sin nombre') + '</h4>';
+                        html += '    <p><strong>ID:</strong> ' + (ev.id || 'N/A') + ' | <strong>Fecha:</strong> ' + formatearFecha(ev.fecha);
+
+                        if (tieneQR) {
+                            html += ' <span class="badge badge-success">✓ Con QR</span>';
+                            var qrImg = 'https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=' + encodeURIComponent(ev.urlQR);
+                            html += '  </p></div>';
+                            html += '  <div class="event-qr-section">';
+                            html += '    <div class="qr-preview">';
+                            html += '      <img src="' + qrImg + '">';
+                            html += '      <div class="qr-actions">';
+                            html += '        <button class="btn btn-secondary" onclick="descargarQREvento(\'' + qrImg + '\', \'' + ev.id + '\')">📥 Descargar</button>';
+                            html += '        <button class="btn btn-secondary" onclick="copiarURLEvento(\'' + ev.urlQR.replace(/'/g, "\\'") + '\')">📋 Copiar URL</button>';
+                            html += '        <button class="btn btn-secondary" onclick="compartirEventoWhatsApp(\'' + ev.nombre.replace(/'/g, "\\'") + '\', \'' + ev.urlQR.replace(/'/g, "\\'") + '\', \'' + ev.fecha + '\')">💬 WhatsApp</button>';
+                            html += '        <button class="btn btn-secondary" onclick="compartirEventoEmail(\'' + ev.nombre.replace(/'/g, "\\'") + '\', \'' + ev.urlQR.replace(/'/g, "\\'") + '\', \'' + ev.fecha + '\')">📧 Email</button>';
+                            html += '        <button class="btn btn-secondary" onclick="compartirEventoTelegram(\'' + ev.nombre.replace(/'/g, "\\'") + '\', \'' + ev.urlQR.replace(/'/g, "\\'") + '\')">✈️ Telegram</button>';
+                            html += '      </div>';
+                            html += '    </div>';
+                            html += '  </div>';
+                        } else {
+                            html += ' <span class="badge badge-warning">⚠️ Sin QR</span>';
+                            html += '  </p></div>';
+                            html += '  <div style="margin-top: 15px;">';
+                            html += '    <button class="btn btn-primary" onclick="generarQRParaEvento(\'' + ev.id + '\', \'' + ev.nombre.replace(/'/g, "\\'") + '\', \'' + ev.fecha + '\')">Generar QR</button>';
+                            html += '  </div>';
+                        }
+
+                        html += '</div>';
+                    }
+
+                    lista.innerHTML = html;
+                })
+                .withFailureHandler(function (error) {
+                    lista.innerHTML = '<p style="text-align: center; color: #f44336;">Error: ' + error.message + '</p>';
+                })
+                .obtenerEventos();
+        }
+
+        function generarQR(event) {
+            event.preventDefault();
+
+            var nombreEvento = document.getElementById('nombreEvento').value;
+            var idEvento = document.getElementById('idEvento').value;
+            var fechaEvento = document.getElementById('fechaEvento').value;
+
+            if (!nombreEvento || !idEvento || !fechaEvento) {
+                mostrarAlerta('error', 'Completa todos los campos');
+                return false;
+            }
+
+            document.getElementById('loading').classList.add('show');
+            document.getElementById('qrResult').classList.remove('show');
+
+            google.script.run
+                .withSuccessHandler(function (resultado) {
+                    document.getElementById('loading').classList.remove('show');
+
+                    if (resultado) {
+                        qrData = resultado;
+                        document.getElementById('qrEventoNombre').textContent = resultado.nombreEvento;
+                        document.getElementById('qrEventoId').textContent = 'ID: ' + resultado.idEvento;
+                        document.getElementById('qrImage').src = resultado.urlQR;
+                        document.getElementById('qrUrl').textContent = resultado.urlEvento;
+                        document.getElementById('qrResult').classList.add('show');
+
+                        mostrarAlerta('success', '¡QR generado exitosamente!');
+                        cargarEventos();
+                        cargarEstadisticas();
+                    } else {
+                        mostrarAlerta('error', 'Error al generar QR');
+                    }
+                })
+                .withFailureHandler(function (error) {
+                    document.getElementById('loading').classList.remove('show');
+                    mostrarAlerta('error', 'Error: ' + error.message);
+                })
+                .crearEventoYGenerarQR(nombreEvento, idEvento, fechaEvento);
+
+            return false;
+        }
+
+        function generarQRParaEvento(id, nombre, fecha) {
+            document.getElementById('idEvento').value = id;
+            document.getElementById('nombreEvento').value = nombre;
+            document.getElementById('fechaEvento').value = fecha;
+            switchTab('generar');
+            setTimeout(function () {
+                document.getElementById('formQR').dispatchEvent(new Event('submit'));
+            }, 500);
+        }
+
+        function descargarQR() {
+            if (!qrData) return;
+            var link = document.createElement('a');
+            link.href = qrData.urlQR;
+            link.download = 'QR_' + qrData.idEvento + '.png';
+            link.click();
+            mostrarAlerta('success', 'Descargando...');
+        }
+
+        function descargarQREvento(url, id) {
+            var link = document.createElement('a');
+            link.href = url;
+            link.download = 'QR_' + id + '.png';
+            link.click();
+            mostrarAlerta('success', 'Descargando...');
+        }
+
+        function copiarURL() {
+            if (!qrData) return;
+            navigator.clipboard.writeText(qrData.urlEvento).then(function () {
+                mostrarAlerta('success', '¡URL copiada!');
+            }).catch(function () {
+                mostrarAlerta('error', 'Error al copiar');
+            });
+        }
+
+        function compartirWhatsApp() {
+            if (!qrData) return;
+            var texto = '📱 *' + qrData.nombreEvento + '*\n\nEscanea este código QR para registrar tu asistencia:\n' + qrData.urlEvento + '\n\nFecha: ' + formatearFecha(qrData.fecha);
+            var whatsappUrl = 'https://wa.me/?text=' + encodeURIComponent(texto);
+            window.open(whatsappUrl, '_blank');
+        }
+
+        function compartirEmail() {
+            if (!qrData) return;
+            var asunto = 'Registro de Asistencia: ' + qrData.nombreEvento;
+            var cuerpo = 'Hola,\n\nPara registrar tu asistencia al evento "' + qrData.nombreEvento + '", escanea el código QR o accede al siguiente enlace:\n\n' + qrData.urlEvento + '\n\nFecha: ' + formatearFecha(qrData.fecha) + '\n\nGracias,\nEquipo DGAD';
+            var mailtoUrl = 'mailto:?subject=' + encodeURIComponent(asunto) + '&body=' + encodeURIComponent(cuerpo);
+            window.location.href = mailtoUrl;
+        }
+
+        function compartirTelegram() {
+            if (!qrData) return;
+            var texto = '📱 ' + qrData.nombreEvento + '\n\nRegistra tu asistencia aquí: ' + qrData.urlEvento;
+            var telegramUrl = 'https://t.me/share/url?url=' + encodeURIComponent(qrData.urlEvento) + '&text=' + encodeURIComponent(texto);
+            window.open(telegramUrl, '_blank');
+        }
+
+        function copiarURLEvento(url) {
+            navigator.clipboard.writeText(url).then(function () {
+                mostrarAlerta('success', '¡URL copiada!');
+            }).catch(function () {
+                mostrarAlerta('error', 'Error');
+            });
+        }
+
+        function compartirEventoWhatsApp(nombre, url, fecha) {
+            var texto = '📱 *' + nombre + '*\n\nEscanea este código QR para registrar tu asistencia:\n' + url + '\n\nFecha: ' + formatearFecha(fecha);
+            var whatsappUrl = 'https://wa.me/?text=' + encodeURIComponent(texto);
+            window.open(whatsappUrl, '_blank');
+        }
+
+        function compartirEventoEmail(nombre, url, fecha) {
+            var asunto = 'Registro de Asistencia: ' + nombre;
+            var cuerpo = 'Hola,\n\nPara registrar tu asistencia al evento "' + nombre + '", escanea el código QR o accede al siguiente enlace:\n\n' + url + '\n\nFecha: ' + formatearFecha(fecha) + '\n\nGracias,\nEquipo DGAD';
+            var mailtoUrl = 'mailto:?subject=' + encodeURIComponent(asunto) + '&body=' + encodeURIComponent(cuerpo);
+            window.location.href = mailtoUrl;
+        }
+
+        function compartirEventoTelegram(nombre, url) {
+            var texto = '📱 ' + nombre + '\n\nRegistra tu asistencia aquí: ' + url;
+            var telegramUrl = 'https://t.me/share/url?url=' + encodeURIComponent(url) + '&text=' + encodeURIComponent(texto);
+            window.open(telegramUrl, '_blank');
+        }
+
+        function generarReporteSemanal() {
+            mostrarAlerta('success', 'Generando reporte...');
+            google.script.run
+                .withSuccessHandler(function () {
+                    mostrarAlerta('success', '¡Reporte enviado!');
+                })
+                .withFailureHandler(function (error) {
+                    mostrarAlerta('error', 'Error: ' + error.message);
+                })
+                .generarReporteSemanal();
+        }
+
+        function generarReporteMensual() {
+            mostrarAlerta('success', 'Generando reporte...');
+            google.script.run
+                .withSuccessHandler(function () {
+                    mostrarAlerta('success', '¡Reporte enviado!');
+                })
+                .withFailureHandler(function (error) {
+                    mostrarAlerta('error', 'Error: ' + error.message);
+                })
+                .generarReporteMensual();
+        }
+
+        function reinicializarSistema() {
+            if (!confirm('¿Seguro?')) return;
+            mostrarAlerta('success', 'Reinicializando...');
+            google.script.run
+                .withSuccessHandler(function (res) {
+                    mostrarAlerta(res.success ? 'success' : 'error', res.message);
+                    if (res.success) cargarEstadisticas();
+                })
+                .withFailureHandler(function (error) {
+                    mostrarAlerta('error', 'Error: ' + error.message);
+                })
+                .inicializarSistema();
+        }
+
+		function abrirGoogleForm() 
+		{
+			var timestamp = new Date().getTime();
+			var formUrl = 'https://forms.gle/XvUo91dJVtpDKBas5?' + timestamp;
+			window.open(formUrl, '_blank');
+		}
+
+        function mostrarQRGoogleForm() {
+            var formUrl = 'https://forms.gle/XvUo91dJVtpDKBas5';
+            var qrUrl = 'https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=' + encodeURIComponent(formUrl);
+
+            var modal = document.createElement('div');
+            modal.style.cssText = 'position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.8); display: flex; align-items: center; justify-content: center; z-index: 9999;';
+
+            modal.innerHTML = '<div style="background: white; padding: 30px; border-radius: 15px; max-width: 500px; text-align: center;">' +
+                '<h2 style="color: #667eea; margin-bottom: 20px;">QR del Google Form</h2>' +
+                '<img src="' + qrUrl + '" style="max-width: 300px; margin: 20px auto; border: 5px solid white; border-radius: 12px; box-shadow: 0 5px 15px rgba(0,0,0,0.2);">' +
+                '<div style="background: #f8f9fa; padding: 15px; border-radius: 8px; margin: 20px 0; word-break: break-all; font-size: 12px;">' + formUrl + '</div>' +
+                '<div style="display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;">' +
+                '<button class="btn btn-primary" onclick="descargarQRForm(\'' + qrUrl + '\')">📥 Descargar</button>' +
+                '<button class="btn btn-secondary" onclick="copiarURLForm(\'' + formUrl + '\')">📋 Copiar URL</button>' +
+                '<button class="btn btn-secondary" onclick="compartirFormWhatsApp()">💬 WhatsApp</button>' +
+                '<button class="btn btn-secondary" onclick="cerrarModal(this)">❌ Cerrar</button>' +
+                '</div>' +
+                '</div>';
+
+            document.body.appendChild(modal);
+            modal.onclick = function (e) {
+                if (e.target === modal) {
+                    document.body.removeChild(modal);
+                }
+            };
+        }
+
+        function cerrarModal(btn) {
+            var modal = btn.parentElement.parentElement.parentElement;
+            if (modal) {
+                document.body.removeChild(modal);
+            }
+        }
+
+        function descargarQRForm(url) {
+            var link = document.createElement('a');
+            link.href = url;
+            link.download = 'QR_GoogleForm_DGAD.png';
+            link.click();
+            mostrarAlerta('success', 'Descargando QR del formulario...');
+        }
+
+        function copiarURLForm(url) {
+            navigator.clipboard.writeText(url).then(function () {
+                mostrarAlerta('success', '¡URL del formulario copiada!');
+            }).catch(function () {
+                mostrarAlerta('error', 'Error al copiar');
+            });
+        }
+
+        function compartirFormWhatsApp() {
+            var url = 'https://forms.gle/2w8hMqHbhLnTaoc4A';
+            var texto = '📝 *Registro de Asistencia DGAD*\n\nPor favor completa el formulario de registro:\n' + url;
+            var whatsappUrl = 'https://wa.me/?text=' + encodeURIComponent(texto);
+            window.open(whatsappUrl, '_blank');
+        }
+
+        function abrirSpreadsheet() {
+            window.open('https://docs.google.com/spreadsheets/d/19Pgn1lHEd_8E1DNyxUq6Yrk-0CGPR2G3rYjH-9wr3ec/edit', '_blank');
+        }
+
+        function abrirLookerStudio() {
+            window.open('https://lookerstudio.google.com/embed/reporting/bfa889cc-0127-452a-b627-e77b8c2d48c1/page/page_12345', '_blank');
+        }
+
+        function resetearHoja() {
+            if (!confirm('ADVERTENCIA: Esto eliminara TODOS los registros de asistencia. Estas completamente seguro?')) {
+                return;
+            }
+
+            if (!confirm('Esta accion NO se puede deshacer. Confirmas que deseas eliminar todos los datos?')) {
+                return;
+            }
+
+            mostrarAlerta('success', 'Creando backup y reseteando...');
+
+            google.script.run.withSuccessHandler(function (resultado) {
+                if (resultado.success) {
+                    mostrarAlerta('success', 'EXITO: ' + resultado.message);
+                    setTimeout(function () {
+                        cargarEstadisticas();
+                    }, 1000);
+                } else {
+                    mostrarAlerta('error', 'ERROR: ' + resultado.message);
+                }
+            }).withFailureHandler(function (error) {
+                mostrarAlerta('error', 'ERROR: ' + error.message);
+            }).limpiarHojaRespuestas();
+        }
+
+        function mostrarAlerta(tipo, mensaje) {
+            var id = tipo === 'success' ? 'alertSuccess' : 'alertError';
+            var alerta = document.getElementById(id);
+            alerta.textContent = mensaje;
+            alerta.classList.add('show');
+            setTimeout(function () {
+                alerta.classList.remove('show');
+            }, 5000);
+        }
+
+        function formatearFecha(fecha) {
+            if (!fecha) return 'N/A';
+            try {
+                var d = new Date(fecha);
+                if (isNaN(d.getTime())) return 'N/A';
+                return d.toLocaleDateString('es-ES', { year: 'numeric', month: 'long', day: 'numeric' });
+            } catch (e) {
+                return 'N/A';
+            }
+        }
+    </script>
+</body>
+
+</html>
