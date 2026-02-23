@@ -1,10 +1,10 @@
 {
-  "timeZone": "America/El_Salvador",
+  "timeZone": "America/Guatemala",
   "dependencies": {},
   "exceptionLogging": "STACKDRIVER",
   "runtimeVersion": "V8",
   "webapp": {
     "executeAs": "USER_DEPLOYING",
-    "access": "ANYONE"
+    "access": "ANYONE_ANONYMOUS"
   }
 }
