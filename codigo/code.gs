@@ -170,7 +170,7 @@ function verificarAdmin(email) {
   try {
     // Lista de emails autorizados como admin
     const ADMINS_AUTORIZADOS = [
-      'j9918j@gmail.com',
+      '<<tuCuenta@CorreoAqui.com>>',
       // Agrega más emails aquí
     ];
     
@@ -396,6 +396,7 @@ function registrarParticipante(registro) {
 function generarIDParticipante(cantidadActual) {
   const numero = String(cantidadActual).padStart(2, '0');
   return `SN-10-${numero}`;
+  // Defina su Estandar de Numeracion de Participante
 }
 
 // ============================================
@@ -884,7 +885,7 @@ function enviarReporteEmail(reporte, tipo) {
     
     // Enviar al coordinador
     MailApp.sendEmail({
-      to: 'j9918j@gmail.com', // Correo del coordinador Jonathan
+      to: '<<TuCuenta@DeCorreoAqui.com>>', // Correo del coordinador
       subject: asunto,
       htmlBody: mensaje
     });
@@ -973,7 +974,7 @@ function configurarValidaciones() {
 function enviarAlertaError(titulo, mensaje) {
   try {
     MailApp.sendEmail({
-      to: 'j9918j@gmail.com',
+      to: '<<TuCuenta@DeCorreoAqui.com>>',
       subject: '⚠️ Alerta del Sistema DGAD - ' + titulo,
       body: `Se ha detectado un error en el sistema:\n\n${mensaje}\n\nFecha: ${new Date()}`
     });
@@ -1262,13 +1263,13 @@ function limpiarHojaRespuestas() {
       
       // Enviar email con el archivo adjunto
       MailApp.sendEmail({
-        to: 'j9918j@gmail.com',
+        to: '<<TuCuenta@DeCorreoAqui.com>>',
         subject: asunto,
         htmlBody: mensaje,
         attachments: [blob]
       });
       
-      Logger.log('✅ Backup enviado exitosamente a j9918j@gmail.com');
+      Logger.log('✅ Backup enviado exitosamente a <<TuCuenta@DeCorreoAqui.com>>');
       Logger.log('📎 Archivo adjunto: ' + nombreArchivo);
       
     } catch (errorBackup) {
@@ -1294,7 +1295,7 @@ function limpiarHojaRespuestas() {
     
     return { 
       success: true, 
-      message: `✅ Backup enviado a j9918j@gmail.com\n\n🗑️ Se eliminaron ${totalRegistros} registros.\n\nLa hoja se ha reseteado correctamente.` 
+      message: `✅ Backup enviado a <<TuCuenta@DeCorreoAqui.com>>\n\n🗑️ Se eliminaron ${totalRegistros} registros.\n\nLa hoja se ha reseteado correctamente.` 
     };
     
   } catch (error) {
