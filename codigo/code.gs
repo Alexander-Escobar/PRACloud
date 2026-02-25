@@ -21,7 +21,7 @@
 // CONFIGURACIÓN GLOBAL
 // ============================================
 const CONFIG = {
-  SPREADSHEET_ID: '19Pgn1lHEd_8E1DNyxUq6Yrk-0CGPR2G3rYjH-9wr3ec',
+  SPREADSHEET_ID: 'TuSPREADSHEET_ID-Personal',
   SHEETS: {
     RESPUESTAS: 'Respuestas de formulario v3',
     EVENTOS: 'Catálogo_Eventos',
