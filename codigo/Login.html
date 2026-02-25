@@ -328,12 +328,12 @@
     // CONFIGURACIÓN DE FIREBASE
     // ============================================
     const firebaseConfig = {
-      apiKey: "AIzaSyCNuvcq8Uv081wWZsBQunsr0rVhpocKTuc",
-      authDomain: "dgad-asistencia.firebaseapp.com",
-      projectId: "dgad-asistencia",
-      storageBucket: "dgad-asistencia.firebasestorage.app",
-      messagingSenderId: "97117890335",
-      appId: "1:97117890335:web:983f787667b04ffed6722a"
+      apiKey: "%%FIREBASE_API_KEY%%",
+      authDomain: "%%FIREBASE_AUTH_DOMAIN%%",
+      projectId: "%%FIREBASE_PROJECT_ID%%",
+      storageBucket: "%%FIREBASE_STORAGE_BUCKET%%",
+      messagingSenderId: "%%FIREBASE_MESSAGING_SENDER_ID%%",
+      appId: "%%FIREBASE_APP_ID%%"
     };
     
     // Inicializar Firebase
@@ -341,7 +341,7 @@
     const auth = firebase.auth();
 
     // URL de deployment de Google Apps Script
-    const DEPLOYMENT_URL = 'https://script.google.com/macros/s/AKfycbwnN1Hl4sK8_UbwJ5pske3cfTp9Lf8TC2HGx1bWdtcwJq-2pbphgIlI6kOTKD6kpCd4/exec';
+    const DEPLOYMENT_URL = '%%DEPLOYMENT_URL%%';
     
     // Variables globales para el flujo OTP
     let sessionData = {
