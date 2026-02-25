@@ -56,59 +56,27 @@ El documento detallado de **Análisis y Diseño** (Fase 1) y el **Plan de Recurs
 ## Estructura del repositorio
 
 ```text
-/
-├── /docs       # Documentación del proyecto (análisis, diseño, informe final)
-├── /src        # Scripts de automatización (.gs para Apps Script)
-├── /tests      # Evidencias y matrices de pruebas
-├── /diagramas  # Diagramas de arquitectura y flujo (.drawio / .png)
-└── README.md   # Información general del proyecto
-Cómo ejecutar / Configurar el proyecto
-Requisitos previos
-Cuenta de Google Workspace (con acceso a Forms, Sheets y Apps Script)
+DGAD-Sistema-Asistencia/
+├── README.md
+│   
+├── codigo/
+│   ├── Codigo.gs
+│   ├── Login.html
+│   ├── PanelAdmin.html
+│   └── FormularioQR.html
+├── documentacion/
+│   
+├── videos/
+│   
+├── bitacora/
+│   
+└── recursos/
+    ├── GUIA_INSTALACION.md
+    └── GUIA_USO.md
 
-Navegador web actualizado
 
-Conocimientos básicos de Google Sheets
 
-Pasos de configuración
-Clonar este repositorio (opcional para desarrollo local):
 
-Bash
-
-git clone [https://github.com/Alexander-Escobar/PRACloud.git](https://github.com/Alexander-Escobar/PRACloud.git)
-Configurar Google Sheets:
-
-Crea una nueva hoja de cálculo en Google Sheets.
-
-Define las columnas según el Modelo de Datos (Timestamp, Nombre, ID, Correo, Evento, etc.).
-
-Configurar Google Forms:
-
-Crea un formulario y vincúlalo a la hoja de cálculo creada en el paso anterior.
-
-Implementar los Scripts:
-
-En la hoja de cálculo, ve a Extensiones > Apps Script.
-
-Copia el contenido de los archivos de la carpeta /scripts de este repositorio y pégalos en el editor de Apps Script.
-
-Guarda el proyecto y configura los activadores (Triggers) necesarios (ej: onFormSubmit).
-
-Convención de commits y Flujo de Trabajo
-Para mantener el orden en el desarrollo colaborativo, el equipo sigue la siguiente convención:
-
-Convención de commits
-Usamos prefijos semánticos para identificar el propósito de cada cambio:
-
-feat: Nueva funcionalidad (ej: feat: agregar formulario de registro)
-
-fix: Corrección de error (ej: fix: corregir cálculo de asistencia)
-
-docs: Documentación (ej: docs: actualizar README)
-
-refactor: Reestructuración de código (ej: refactor: optimizar script)
-
-test: Pruebas (ej: test: agregar pruebas unitarias)
 
 Proceso de desarrollo
 Crear rama desde develop:
